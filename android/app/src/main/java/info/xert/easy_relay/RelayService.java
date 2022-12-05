@@ -1,5 +1,6 @@
 package info.xert.easy_relay;
 
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -90,6 +91,7 @@ public class RelayService extends Service {
         notificationManager.createNotificationChannel(notificationChannel);
     }
 
+    @TargetApi(Build.VERSION_CODES.Q)
     private void aquireLocks() {
         powerManager = (PowerManager) getSystemService(Context.POWER_SERVICE);
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "easyRelay:keepConnectionLock");
@@ -97,7 +99,7 @@ public class RelayService extends Service {
         wakeLock.acquire(30*60*1000L /*30 minutes*/);
 
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL, "easyRelay:wifiKeepLock");
+        wifiLock = wifiManager.createWifiLock(WifiManager.WIFI_MODE_FULL_LOW_LATENCY , "easyRelay:wifiKeepLock");
         wifiLock.acquire();
     }
 
